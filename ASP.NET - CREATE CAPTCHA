@@ -1,0 +1,65 @@
+
+CSharp - C# - ASP.NET - CREATE CAPTCHA
+
+readonly int FONT_SIZE = 12;
+readonly string FONT_NAME = "Arial Bold";
+readonly Brush FONT_COLOR = Brushes.White;
+readonly FontStyle FONT_STYLE = FontStyle.Bold;
+readonly Color BACKGROUND_COLOR = Color.Green;
+
+int CAPTCHA_LENGTH = 6;
+
+int PADDING_TOP = 5;
+int PADDING_LEFT = 5;
+int PADDING_RIGHT = 4;
+int PADDING_BOTTOM = 4;
+
+protected void Page_Load(object sender, EventArgs e)
+{
+    // CREATE RANDOM STRING
+    string rSTRING = RANDOM_STRING(CAPTCHA_LENGTH);
+
+    // CREATE FONT OBJECT
+    Font oFONT = new Font(FONT_NAME, FONT_SIZE, FONT_STYLE, GraphicsUnit.Point);
+
+    // CALCULATE THE WIDTH AND HEIGHT OF A STRING
+    Graphics oGraphics = Graphics.FromImage(new Bitmap(1, 1));
+    SizeF oSize = oGraphics.MeasureString(rSTRING, oFONT);
+
+    // EXTRACT THE WIDTH AND HEIGHT OF A STRING
+    int IMG_WIDTH = (int)Math.Round(oSize.Width, 0);
+    int IMG_HEIGHT = (int)Math.Round(oSize.Height, 0);
+
+    // THE WIDTH AND HEIGHT + PADDING
+    IMG_WIDTH += (PADDING_RIGHT * 2);
+    IMG_HEIGHT += (PADDING_BOTTOM * 2);
+
+    // CREATE IMAGE WITH THE NEW WIDTH AND HEIGHT
+    Bitmap oBMP = new System.Drawing.Bitmap(IMG_WIDTH, IMG_HEIGHT);
+    oGraphics = System.Drawing.Graphics.FromImage(oBMP);
+
+    oGraphics.Clear(BACKGROUND_COLOR);
+    oGraphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+    oGraphics.DrawString(rSTRING, oFONT, FONT_COLOR, PADDING_LEFT, PADDING_TOP);
+
+    Response.ContentType = "image/GIF";
+    oBMP.Save(Response.OutputStream, ImageFormat.Gif);
+
+    oFONT.Dispose();
+    oGraphics.Dispose();
+    oBMP.Dispose();
+
+    // SAVE CAPTCHA STRING TO SESSION
+    // rSTRING
+    
+    Console.WriteLine(rSTRING);
+}
+
+public static string RANDOM_STRING(int Lengzh)
+{
+    const string Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var Random = new Random();
+    return new string(Enumerable.Repeat(Chars, Lengzh).Select(s => s[Random.Next(s.Length)]).ToArray());
+}
+
