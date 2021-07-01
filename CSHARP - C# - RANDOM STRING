@@ -1,0 +1,8 @@
+CSHARP - C# - RANDOM STRING
+
+public static string RANDOM_STRING(int Lengzh)
+{
+    const string Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var Random = new Random();
+    return new string(Enumerable.Repeat(Chars, Lengzh).Select(s => s[Random.Next(s.Length)]).ToArray());
+}
