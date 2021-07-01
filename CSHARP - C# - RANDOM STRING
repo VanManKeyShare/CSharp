@@ -1,3 +1,4 @@
+
 CSHARP - C# - RANDOM STRING
 
 public static string RANDOM_STRING(int Lengzh)
