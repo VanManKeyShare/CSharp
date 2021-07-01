@@ -7,3 +7,4 @@ public static string RANDOM_STRING(int Lengzh)
     var Random = new Random();
     return new string(Enumerable.Repeat(Chars, Lengzh).Select(s => s[Random.Next(s.Length)]).ToArray());
 }
+
